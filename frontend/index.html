@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3d4a32">
+    <meta name="color-scheme" content="dark light">
+    <title>Album Cover OCR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="app-bg" aria-hidden="true"></div>
+    <div class="app">
+        <header class="app-header" role="banner">
+            <nav class="header-nav" aria-label="Primary">
+            <div class="app-header-top">
+                <div class="brand">
+                    <span class="brand-icon" aria-hidden="true">◆</span>
+                    <div>
+                        <p class="eyebrow">Album OCR</p>
+                        <h1 class="app-title" id="page-title">Album art to Spotify</h1>
+                    </div>
+                </div>
+                <a class="btn btn-brown" href="/collection">My collection</a>
+            </div>
+            </nav>
+            <div class="lede-block">
+                <p class="lede">
+                    This app reads text from <strong>album cover images</strong> (OCR), searches <strong>Spotify</strong> for matching releases, and lets you <strong>save albums</strong> to a personal list backed by your account database.
+                </p>
+                <p class="lede-label">How to use it</p>
+                <ul class="lede-rules">
+                    <li>Images: JPG, PNG, or HEIC · max <strong>5&nbsp;MB</strong> per file.</li>
+                    <li>OCR: Straight on shots should be taken with readable artist and title text; reflections and blurriness affect accuracy.</li>
+                    <li>Flow: Take a picture or choose from your camera/upload → Click upload → Select the proper Spotify track → Save. All this can be viewed in My collection.</li>
+                    <li>Live camera: It works in the browser as long as you give permission for the camera to be accessed; it can be done via HTTPS or localhost.</li>
+                </ul>
+            </div>
+        </header>
+
+        <main id="main-content" class="main" tabindex="-1" aria-labelledby="page-title">
+            <section class="card card-pad camera-section" aria-labelledby="camera-heading">
+                <h2 id="camera-heading" class="section-title">Take a photo</h2>
+                <p class="section-hint">Use the live camera, or choose or drop an image below, then <strong>Upload &amp; process</strong>.</p>
+
+                <div class="camera-block">
+                    <p class="camera-block-title">Live camera</p>
+                    <p class="camera-block-desc">Uses your browser (you may need to allow camera access).</p>
+                    <div class="camera-preview-wrap">
+                        <video id="cameraPreview" class="camera-preview" playsinline muted aria-label="Live camera preview"></video>
+                        <div id="cameraPreviewIdle" class="camera-preview-idle" aria-hidden="false">
+                            <span class="camera-preview-idle-icon" aria-hidden="true">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2v11z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+                            </span>
+                            <span>Preview will show after you start the camera</span>
+                        </div>
+                    </div>
+                    <div class="camera-toolbar" role="group" aria-label="Camera controls">
+                        <button type="button" class="btn btn-brown" id="btnStartCamera">Start camera</button>
+                        <button type="button" class="btn btn-brown" id="btnCapturePhoto" disabled>Capture photo</button>
+                        <button type="button" class="btn btn-stop" id="btnStopCamera" disabled>Stop</button>
+                    </div>
+                </div>
+
+                <div class="camera-divider" role="separator"><span>or</span></div>
+
+                <p id="cameraReadyHint" class="camera-ready-hint hidden" role="status">Photo attached — tap <strong>Upload &amp; process</strong> below.</p>
+
+                <div class="camera-block camera-block-upload">
+                    <p class="camera-block-title">Choose image</p>
+                    <p class="camera-block-desc">Use a clear, well-lit cover for best OCR. Drag and drop or pick a file.</p>
+                    <form id="uploadForm" class="stack">
+                        <label class="file-drop" for="imageInput">
+                            <input type="file" id="imageInput" name="image" class="file-input" accept="image/jpeg,image/jpg,image/png,image/heic,image/heif" required>
+                            <span class="file-drop-title">Choose image or drop here</span>
+                            <span class="file-drop-meta">JPG, PNG, or HEIC · up to 5&nbsp;MB</span>
+                        </label>
+                        <button type="submit" class="btn btn-brown" id="uploadBtn">Upload</button>
+                    </form>
+                </div>
+
+                <div id="uploadStatus" class="status-slot" role="status" aria-live="polite"></div>
+            </section>
+
+            <section id="manualEntry" class="card card-pad hidden" aria-labelledby="manual-heading" aria-hidden="true">
+                <h2 id="manual-heading" class="section-title">Manual entry</h2>
+                <p class="section-hint">OCR could not split artist and title. Enter them to search Spotify.</p>
+                <form id="manualForm" class="stack">
+                    <div class="field">
+                        <label class="field-label" for="manualArtist">Artist</label>
+                        <input type="text" id="manualArtist" class="field-input" required autocomplete="off">
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="manualAlbum">Album</label>
+                        <input type="text" id="manualAlbum" class="field-input" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search Spotify</button>
+                </form>
+            </section>
+
+            <section id="resultsSection" class="hidden" aria-labelledby="results-heading" aria-hidden="true">
+                <div class="card card-pad">
+                    <h2 id="results-heading" class="section-title" tabindex="-1">Results</h2>
+                    <div id="resultsWarning" class="banner banner-warn hidden" role="alert"></div>
+                    <div id="resultsList" class="results-list"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer" role="contentinfo">
+            <a href="/collection">View collection →</a>
+        </footer>
+    </div>
+
+    <script src="js/upload.js"></script>
+</body>
+</html>

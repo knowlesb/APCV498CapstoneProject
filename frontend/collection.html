@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3d4a32">
+    <meta name="color-scheme" content="dark light">
+    <title>My collection — Album OCR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="app-bg" aria-hidden="true"></div>
+    <div class="app">
+        <header class="app-header" role="banner">
+            <nav class="header-nav" aria-label="Primary">
+            <div class="app-header-top">
+                <div class="brand">
+                    <span class="brand-icon" aria-hidden="true">◆</span>
+                    <div>
+                        <p class="eyebrow">Your library</p>
+                        <h1 class="app-title" id="collection-page-title">Saved albums</h1>
+                    </div>
+                </div>
+                <a class="btn btn-primary" href="/">Upload cover</a>
+            </div>
+            </nav>
+            <p class="lede">Albums you matched and stored from Spotify.</p>
+        </header>
+
+        <main id="main-content" class="main" tabindex="-1" aria-labelledby="collection-page-title">
+            <section class="card card-pad collection-wrap" aria-labelledby="collection-heading">
+                <h2 id="collection-heading" class="visually-hidden">Your saved albums</h2>
+                <div id="collectionList" class="collection-list" role="region" aria-live="polite" aria-busy="true" aria-labelledby="collection-heading">
+                    <p class="muted">Loading…</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer" role="contentinfo">
+            <a href="/">← Back to upload</a>
+        </footer>
+    </div>
+
+    <script src="js/collection.js"></script>
+</body>
+</html>

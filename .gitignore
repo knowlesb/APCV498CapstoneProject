@@ -1,0 +1,10 @@
+node_modules/
+.env
+*.log
+.DS_Store
+backend/uploads/*
+!backend/uploads/.gitkeep
+google-cloud-key.json
+google-cloud-sdk/
+google-cloud-cli-*.tar.gz
+
