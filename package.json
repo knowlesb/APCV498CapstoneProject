@@ -2,6 +2,10 @@
   "name": "album-ocr-capstone",
   "version": "1.0.0",
   "description": "Album cover OCR to Spotify metadata",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/knowlesb/APCV498CapstoneProject.git"
+  },
   "main": "backend/server.js",
   "scripts": {
     "start": "node backend/server.js",
