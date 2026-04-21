@@ -9,7 +9,7 @@
 
 ## 1) Project Overview
 
-This application lets a user upload an album cover image, extract text using Google Cloud Vision OCR, search Spotify for likely matches, and save selected albums into a PostgreSQL database collection.
+This application lets a user upload an album cover image, extract text using Google Cloud Vision OCR, search Spotify for likely matches, and save selected albums into a MySQL database collection.
 
 Current app flow:
 1. Upload image (`JPG`/`PNG`, max 5MB)
@@ -17,7 +17,7 @@ Current app flow:
 3. Backend parses artist/album
 4. Spotify search returns ranked candidates
 5. User selects match
-6. Album is stored in Postgres
+6. Album is stored in MySQL
 7. Collection page displays saved albums
 
 ---
@@ -31,7 +31,7 @@ Current app flow:
 - Spotify API integration using client credentials flow
 - Ranked result display (top matches)
 - Manual fallback for OCR failure/low quality extraction
-- Save selected album to PostgreSQL
+- Save selected album to MySQL
 - Collection page with saved albums list
 
 ### Error Handling Implemented
@@ -50,7 +50,7 @@ Current app flow:
 ### Stack
 - **Backend:** Node.js + Express
 - **Frontend:** Vanilla JS + HTML/CSS
-- **Database:** PostgreSQL
+- **Database:** MySQL
 - **OCR:** Google Cloud Vision API
 - **Music Metadata:** Spotify Web API
 
@@ -95,7 +95,7 @@ Required environment variables:
 - `GOOGLE_APPLICATION_CREDENTIALS`
 - `SPOTIFY_CLIENT_ID`
 - `SPOTIFY_CLIENT_SECRET`
-- `DATABASE_URL`
+- `MYSQL_URL` (or `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`)
 - `PORT` (optional, defaults to 3000)
 
 Local startup:
@@ -106,7 +106,7 @@ npm start
 
 Database setup:
 ```bash
-psql "postgresql://USER:PASSWORD@localhost:5432/DB_NAME" -f database/schema.sql
+mysql -u USER -p DB_NAME < database/schema.sql
 ```
 
 ---
@@ -119,7 +119,7 @@ psql "postgresql://USER:PASSWORD@localhost:5432/DB_NAME" -f database/schema.sql
 - Spotify query construction fixed (`URLSearchParams`)
 - Spotify limit issue fixed (`limit=10`)
 - OCR parsing improved for hyphenated/misordered text
-- PostgreSQL installed, schema applied, inserts verified
+- MySQL installed, schema applied, inserts verified
 - Repository initialized and pushed to GitHub
 
 ---

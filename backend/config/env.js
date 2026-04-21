@@ -1,7 +1,7 @@
 const path = require('path');
 const dotenv = require('dotenv');
 
-/** Always load `.env` from project root, regardless of cwd (fixes empty DATABASE_URL). */
+/** Always load `.env` from project root, regardless of cwd. */
 const envPath = path.resolve(__dirname, '../../.env');
 const result = dotenv.config({ path: envPath, override: true });
 

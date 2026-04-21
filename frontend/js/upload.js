@@ -18,8 +18,27 @@ const cameraPreviewIdle = document.getElementById('cameraPreviewIdle');
 const btnStartCamera = document.getElementById('btnStartCamera');
 const btnCapturePhoto = document.getElementById('btnCapturePhoto');
 const btnStopCamera = document.getElementById('btnStopCamera');
+const cameraReadyHint = document.getElementById('cameraReadyHint');
+const defaultCameraReadyHint = cameraReadyHint?.innerHTML || 'Photo attached — tap <strong>Upload &amp; process</strong> below.';
 
 let liveCameraStream = null;
+
+function updateSelectedFileFeedback(file) {
+    if (!file) {
+        cameraReadyHint?.classList.add('hidden');
+        if (cameraReadyHint) {
+            cameraReadyHint.innerHTML = defaultCameraReadyHint;
+        }
+        return;
+    }
+
+    const safeName = escapeHtml(file.name || 'unnamed-image');
+    if (cameraReadyHint) {
+        cameraReadyHint.innerHTML = `Image attached: <strong>${safeName}</strong> — tap <strong>Upload &amp; process</strong> below.`;
+        cameraReadyHint.classList.remove('hidden');
+    }
+    showStatus(`Image selected: ${file.name || 'unnamed-image'}`, 'success');
+}
 
 function attachImageFile(file) {
     if (file.type && !ALLOWED_IMAGE_TYPES.includes(file.type)) {
@@ -34,7 +53,7 @@ function attachImageFile(file) {
     dt.items.add(file);
     imageInput.files = dt.files;
 
-    document.getElementById('cameraReadyHint')?.classList.remove('hidden');
+    updateSelectedFileFeedback(file);
     document.getElementById('uploadForm')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return true;
 }
@@ -111,7 +130,8 @@ function captureFromLiveCamera() {
                 showStatus('Could not capture image. Try again.', 'error');
                 return;
             }
-            const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+            const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const file = new File([blob], `camera-capture-${stamp}.jpg`, { type: 'image/jpeg' });
             if (attachImageFile(file)) {
                 stopLiveCamera();
             }
@@ -139,7 +159,8 @@ if (btnStopCamera) {
 
 if (imageInput) {
     imageInput.addEventListener('change', () => {
-        document.getElementById('cameraReadyHint')?.classList.add('hidden');
+        const selectedFile = imageInput.files?.[0] || null;
+        updateSelectedFileFeedback(selectedFile);
     });
 }
 
