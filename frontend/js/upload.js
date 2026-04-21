@@ -41,7 +41,7 @@ function attachImageFile(file) {
 
 function setLivePreviewActive(active) {
     if (cameraPreview) {
-        cameraPreview.classList.toggle('is-live', active);
+        cameraPreview.classList.toggle('isLive', active);
     }
     if (cameraPreviewIdle) {
         cameraPreviewIdle.classList.toggle('hidden', active);
@@ -290,7 +290,7 @@ function showNoResults(artist, album) {
     resultsSection.classList.remove('hidden');
     resultsSection.setAttribute('aria-hidden', 'false');
     document.getElementById('resultsList').innerHTML = `
-        <div class="banner banner-error">
+        <div class="banner bannerError">
             <p>No matches found for <strong>${escapeHtml(artist)}</strong> — <strong>${escapeHtml(album)}</strong>.</p>
             <p>Try manual entry or different wording, then search again.</p>
         </div>
@@ -311,14 +311,14 @@ function displayResults(results, warning) {
     }
 
     const resultsHTML = results.map(result => `
-        <div class="result-item">
+        <div class="resultItem">
             <img src="${result.imageUrl || '/placeholder.png'}" alt="${escapeAttr(`Album cover: ${result.name} by ${result.artist}`)}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'%3E%3Crect fill=\'%23ddd\' width=\'150\' height=\'150\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3ENo Image%3C/text%3E%3C/svg%3E'">
-            <div class="result-info">
+            <div class="resultInfo">
                 <h3>${escapeHtml(result.name)}</h3>
-                <p class="result-meta"><strong>Artist</strong> — ${escapeHtml(result.artist)}</p>
-                ${result.releaseDate ? `<p class="result-meta"><strong>Released</strong> — ${escapeHtml(result.releaseDate)}</p>` : ''}
+                <p class="resultMeta"><strong>Artist</strong> — ${escapeHtml(result.artist)}</p>
+                ${result.releaseDate ? `<p class="resultMeta"><strong>Released</strong> — ${escapeHtml(result.releaseDate)}</p>` : ''}
             </div>
-            <button type="button" class="btn btn-primary btn-select" onclick="selectAlbum('${result.id}', '${escapeHtml(result.name)}', '${escapeHtml(result.artist)}', '${result.releaseDate || ''}', '${result.imageUrl || ''}')">Save</button>
+            <button type="button" class="btn btnBlue btnSelect" onclick="selectAlbum('${result.id}', '${escapeHtml(result.name)}', '${escapeHtml(result.artist)}', '${result.releaseDate || ''}', '${result.imageUrl || ''}')">Save</button>
         </div>
     `).join('');
 
@@ -364,7 +364,8 @@ async function selectAlbum(spotifyId, name, artist, releaseDate, imageUrl) {
 function showStatus(message, type) {
     const statusDiv = document.getElementById('uploadStatus');
     statusDiv.textContent = message;
-    statusDiv.className = `status-slot status-${type}`;
+    const statusKind = type.charAt(0).toUpperCase() + type.slice(1);
+    statusDiv.className = `statusSlot status${statusKind}`;
 }
 
 function escapeHtml(text) {
