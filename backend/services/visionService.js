@@ -4,7 +4,7 @@ const vision = require('@google-cloud/vision');
 require('../config/env');
 
 const CREDENTIALS_HINT =
-  'Create a Google Cloud service account with Vision API access, download its JSON key, and set GOOGLE_APPLICATION_CREDENTIALS in .env to the file’s absolute path (e.g. /Users/you/keys/my-project-abc123.json). Enable the Vision API on that GCP project.';
+  'Create a Google Cloud service account with Vision API access. For local dev, set GOOGLE_APPLICATION_CREDENTIALS to the JSON key file path. For deployment, set GOOGLE_APPLICATION_CREDENTIALS_BASE64 to the base64-encoded JSON key. Enable the Vision API on that GCP project.';
 
 let cachedClient = null;
 let cachedInitError = null;
@@ -17,9 +17,21 @@ function getClient() {
     return { client: cachedClient };
   }
 
+  const encodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+  if (encodedCredentials && String(encodedCredentials).trim()) {
+    try {
+      const credentials = JSON.parse(Buffer.from(encodedCredentials, 'base64').toString('utf8'));
+      cachedClient = new vision.ImageAnnotatorClient({ credentials });
+      return { client: cachedClient };
+    } catch (err) {
+      cachedInitError = `Invalid GOOGLE_APPLICATION_CREDENTIALS_BASE64. ${CREDENTIALS_HINT}`;
+      return { error: cachedInitError };
+    }
+  }
+
   const raw = process.env.GOOGLE_APPLICATION_CREDENTIALS;
   if (!raw || !String(raw).trim()) {
-    cachedInitError = `Missing GOOGLE_APPLICATION_CREDENTIALS. ${CREDENTIALS_HINT}`;
+    cachedInitError = `Missing Google Vision credentials. ${CREDENTIALS_HINT}`;
     return { error: cachedInitError };
   }
 

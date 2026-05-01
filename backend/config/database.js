@@ -29,8 +29,11 @@ if (!hasUrl && !hasDiscrete) {
   process.exit(1);
 }
 
+const sslEnabled = String(process.env.MYSQL_SSL || '').toLowerCase() === 'true';
+
 const pool = mysql.createPool({
   ...mysqlConfig,
+  ...(sslEnabled ? { ssl: { rejectUnauthorized: true } } : {}),
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0

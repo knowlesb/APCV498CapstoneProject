@@ -339,7 +339,7 @@ function displayResults(results, warning) {
                 <p class="resultMeta"><strong>Artist</strong> — ${escapeHtml(result.artist)}</p>
                 ${result.releaseDate ? `<p class="resultMeta"><strong>Released</strong> — ${escapeHtml(result.releaseDate)}</p>` : ''}
             </div>
-            <button type="button" class="btn btnBlue btnSelect" onclick="selectAlbum('${result.id}', '${escapeHtml(result.name)}', '${escapeHtml(result.artist)}', '${result.releaseDate || ''}', '${result.imageUrl || ''}')">Save</button>
+            <button type="button" class="btn btnBlue btnSelect" onclick="selectAlbum('${escapeJsArg(result.id)}', '${escapeJsArg(result.name)}', '${escapeJsArg(result.artist)}', '${escapeJsArg(result.releaseDate || '')}', '${escapeJsArg(result.imageUrl || '')}')">Save</button>
         </div>
     `).join('');
 
@@ -402,5 +402,14 @@ function escapeAttr(text) {
         .replace(/&/g, '&amp;')
         .replace(/"/g, '&quot;')
         .replace(/</g, '&lt;');
+}
+
+/** Safe for embedding values inside single-quoted inline JS args. */
+function escapeJsArg(value) {
+    return String(value ?? '')
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/\r/g, '')
+        .replace(/\n/g, '\\n');
 }
 

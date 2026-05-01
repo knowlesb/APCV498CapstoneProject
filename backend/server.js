@@ -19,6 +19,10 @@ app.use('/api/upload', require('./routes/upload'));
 app.use('/api/search', require('./routes/search'));
 app.use('/api/albums', require('./routes/albums'));
 
+app.get('/health', (req, res) => {
+  res.json({ ok: true });
+});
+
 // Serve frontend pages
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
